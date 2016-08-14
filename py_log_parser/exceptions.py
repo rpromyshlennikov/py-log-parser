@@ -1,0 +1,2 @@
+class FilesMismatchError(Exception):
+    pass
