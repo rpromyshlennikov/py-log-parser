@@ -2,6 +2,12 @@ import os
 
 console_log_level = os.environ.get('LOG_LEVEL', "INFO")
 
+# Extractors settings
+tb_ex_stats = os.environ.get("TRACEBACK_EXTRACTOR_STATS", False)
+tb_ex_strip_space = os.environ.get("TRACEBACK_EXTRACTOR_STRIP", False)
+log_ex_level = os.environ.get("LOGGING_EXTRACTOR_LEVEL", "ERROR")
+re_ex_regexp = os.environ.get("RE_EXTRACTOR_REGEXP")
+
 # Ssh settings
 ssh_login = os.environ.get("ENV_FUEL_LOGIN", "root")
 ssh_password = os.environ.get("ENV_FUEL_PASSWORD", "r00tme")
