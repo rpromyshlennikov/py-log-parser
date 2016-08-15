@@ -14,3 +14,12 @@ ssh_password = os.environ.get("ENV_FUEL_PASSWORD", "r00tme")
 private_key_path = os.environ.get(
     "FUEL_KEY", os.path.join(os.path.expanduser("~"), "fuel.key"))
 host_keys_check = os.environ.get("STRICT_SSH_CHECK", None)
+
+# MOS workflow settings
+working_dir = os.environ.get("WORKING_DIR", "/tmp/py_log_parser")
+init_dir_path = os.environ.get("INIT_DIR_PATH", "init")
+final_dir_path = os.environ.get("FINAL_DIR_PATH", "final")
+stripped_dir_path = os.environ.get("STRIPPED_DIR_PATH", "stripped")
+parse_input_dir_path = os.environ.get("PARSE_INPUT_DIR_PATH", "input")
+parse_output_dir_path = os.environ.get("PARSE_OUTPUT_DIR_PATH", "output")
+remote_collect_path = os.environ.get("REMOTE_COLLECT_PATH", "/var/log")
