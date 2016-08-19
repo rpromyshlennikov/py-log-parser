@@ -12,6 +12,8 @@ This project created for collecting and parsing logs
     $ source venv/bin/activate
     $ pip install -U pip
     $ pip install py_log_parser-<version>.tar.gz
+     OR
+    $ pip install git+git://github.com/rpromyshlennikov/py-log-parser@<version>
 
 
 ### Environment prepare
@@ -111,11 +113,16 @@ usage: py-log-parser mos collect [-h] <hostname or IP>
 positional arguments:
   <hostname or IP>  Server to collect logs from
 ********************************************
-usage: py-log-parser mos analyze [-h] <extractor> [<extractor> ...]
+usage: py-log-parser mos analyze [-h] [--catalog-name CATALOG_NAME]
+                                 <extractor> [<extractor> ...]
 
 positional arguments:
-  <extractor>  Extractors to process log files, may be any of ['regexp',
-               'tracebacks', 'logging']
+  <extractor>  Extractors to process log files, may be any of
+                        ['regexp', 'tracebacks', 'logging']
+optional arguments:
+  --catalog-name CATALOG_NAME
+                        Extracted files catalog file name
+
 ```
 
 Usage example:
@@ -128,6 +135,6 @@ Usage example:
    * `$ py-log-parser mos collect <some 1st server>`
    * `$ py-log-parser mos collect <some 2nd server>` ... and so on
 4. Run log analysis:
-   * `$ py-log-parser mos analyze traceback logging`
+   * `$ py-log-parser mos analyze tracebacks logging`
 
 After running last command there will be created output folder with parsed data.

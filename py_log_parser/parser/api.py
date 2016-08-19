@@ -17,11 +17,13 @@ class LogFileParser(object):
         self.output = self.log_file if not output_filename else output_filename
         self._coroutine_writers = {}
         self._init_write_coroutines(self.extractors_mapping.keys())
+        self._extracted_files = []
 
     def _init_write_coroutines(self, extractor_names):
 
         def write_coroutine(file_name, data=None):
             data = yield data
+            self._extracted_files.append(file_name)
             with open(file_name, "a") as out_file:
                 logger.info(
                     "Opened {} file to write result.".format(file_name))
@@ -45,9 +47,10 @@ class LogFileParser(object):
                         yield occurrence, extractor
 
     def parse_file(self):
-        logger.info("Opened {} file to parse.".format(self.log_file))
+        logger.debug("Opened {} file to parse.".format(self.log_file))
         for occurrence, extractor in self.iterate_occurrences():
             self._coroutine_writers[extractor.name].send(occurrence)
+        return self._extracted_files
 
 
 def parse_log_file(filename, extractor_names=("tracebacks",),
@@ -66,4 +69,4 @@ def parse_log_file(filename, extractor_names=("tracebacks",),
                     for extractor in ex.get_extractors(extractor_names)],
         output_filename=output_filename
     )
-    log_parser.parse_file()
+    return log_parser.parse_file()

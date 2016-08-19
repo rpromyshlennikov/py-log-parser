@@ -48,6 +48,11 @@ def do_collect(args):
 
 
 @arg(
+    "--catalog-name",
+    default=settings.catalog_name,
+    help="Extracted files catalog file name"
+)
+@arg(
     "extractors",
     nargs='+',
     default=[],
@@ -57,7 +62,7 @@ def do_collect(args):
 )
 def do_analyze(args):
     mos = api.MosWorkflow.get_mos_workflow(args)
-    mos.analyze(args.extractors)
+    mos.analyze(args.extractors, args.catalog_name)
 
 
 def register_sub_parser(subparsers):

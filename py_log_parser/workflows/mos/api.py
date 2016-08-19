@@ -108,16 +108,32 @@ class MosWorkflow(object):
                 else:
                     shutil.copy2(abs_path, stripped_file_path)
 
-    def analyze(self, extractors):
+    def analyze(self, extractors, catalog_name):
         """Parse prepared logs and store result"""
         self._prepare_diff_logs()
         output_dir = os.path.join(
             self._output_dir, "{}".format(time.strftime("%Y_%m_%d_%H_%M_%S")))
+        extracted_catalog = []
+        total_processed = 0
         for (dirpath, _, filenames) in os.walk(self._stripped_dir):
             for filename in filenames:
                 abs_path = os.path.join(dirpath, filename)
                 rel_path = os.path.relpath(abs_path, self._stripped_dir)
                 output_filename = os.path.join(output_dir, rel_path)
                 helpers.make_tree(os.path.dirname(output_filename))
-                parser_api.parse_log_file(
-                    abs_path, extractors, self.config, output_filename)
+                extracted_catalog.extend(
+                    parser_api.parse_log_file(
+                        abs_path, extractors, self.config, output_filename)
+                )
+                total_processed += 1
+        if catalog_name:
+            with open(os.path.join(
+                    output_dir, catalog_name), "w") as catalog_file:
+                for file_extracted in extracted_catalog:
+                    catalog_file.write("{}\n".format(file_extracted))
+        logger.info("Extracted files: {}".format(extracted_catalog))
+        logger.info(
+            "Total files processed: {processed}, "
+            "extracted: {extracted}".format(processed=total_processed,
+                                            extracted=len(extracted_catalog))
+        )
